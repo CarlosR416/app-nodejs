@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- head partial -->
+    <%- include('../partials/head.ejs') %>
+    <!-- //////////////////////// -->
+
+</head>
+<body>
+    
+    <!-- header partial-->
+    <%- include('../partials/header.ejs') %>
+    <!-- //////////////////////// -->
+
+
+    <main id="main">
+        <section id="contact" class="contact mb-5">
+          <div class="container" data-aos="fade-up">
+    
+            <div class="row">
+              <div class="col-lg-12 text-center mb-5">
+                <h1 class="page-title">Contactanos</h1>
+              </div>
+            </div>
+    
+            <div class="row gy-4">
+    
+              <div class="col-md-4">
+                <div class="info-item">
+                  <i class="bi bi-geo-alt"></i>
+                  <h3>Nuestra Ubicacion</h3>
+                  <address>Frente a traki, Antigua villa de los buhoneros</address>
+                </div>
+              </div><!-- End Info Item -->
+    
+              <div class="col-md-4">
+                <div class="info-item info-item-borders">
+                  <i class="bi bi-phone"></i>
+                  <h3>Numero de Contacto</h3>
+                  <p><a href="tel:+58414701385">+58 414-7013685</a></p>
+                </div>
+              </div><!-- End Info Item -->
+    
+              <div class="col-md-4">
+                <div class="info-item">
+                  <i class="bi bi-envelope"></i>
+                  <h3>Escribenos al correo</h3>
+                  <p><a href="mailto:info@example.com">info@example.com</a></p>
+                </div>
+              </div><!-- End Info Item -->
+    
+            </div>
+            
+            <div class="form mt-5">
+              <form action="/contactanos/mensaje" method="post" role="form" class="php-email-form">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <input type="te/contactanos/mensajext" name="name" class="form-control" id="name" placeholder="Indicanos tu nombre" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="El correo a donde te responderemos" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" name="message" rows="5" placeholder="Dejanos tu mensaje" required></textarea>
+                </div>
+                <div class="my-3">
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+                </div>
+                <div class="text-center"><button type="submit">Enviar Mensaje</button></div>
+              </form>
+            </div><!-- End Contact Form -->
+    
+          </div>
+        </section>
+    
+      </main><!-- End #main -->
+
+
+    <!-- footer partial-->
+    <%- include('../partials/footer.ejs') %>
+    <!-- //////////////////////// -->
+</body>
+</html>

@@ -9,8 +9,8 @@
 
     <nav id="navbar" class="navbar">
         <ul>
-        <li><a href="/">Inicio</a></li>
-        <li><a href="/productos">Nuestros productos</a></li>
+        <li><a href="/">Agregar</a></li>
+        <li><a href="/productos">Editar</a></li>
         <!--<li class="dropdown"><a href="category.html"><span>Categories</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
             <li><a href="search-result.html">Search Result</a></li>
@@ -30,19 +30,16 @@
             </ul>
         </li>-->
 
-        <li><a href="/nosotros">Nosotros</a></li>
-        <li><a href="/contactanos">Contactanos</a></li>
+        <li><a href="/nosotros">Eliminar</a></li>
+        
         </ul>
     </nav><!-- .navbar -->
 
     <div class="position-relative">
-        <a href="#" class="mx-2"><span class="bi-facebook"></span></a>
-        <a href="#" class="mx-2"><span class="bi-instagram"></span></a>
-        <% if(admin == 0){ %>
-        <a href="/ingresar" class="mx-2"><span class="bi-people"></span></a>
-        <% }else{ %>
-        <a href="/admin/dashboard" class="mx-2"><span class="bi-box-arrow-left"></span></a>
-        <% } %>
+        
+        
+        <a href="/" class="mx-2"><span class="bi-box-arrow-right"></span></a>
+       
         <a href="#" class="mx-2 js-search-open" style="display: none;"><span class="bi-search"></span></a>
         <i class="bi bi-list mobile-nav-toggle"></i>
 
