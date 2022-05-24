@@ -24,7 +24,7 @@
     
             
             <div class="form mt-5">
-              <form action="/auth" method="post" role="form" class="php-email-form">
+              <form action="/ingresar" method="post" role="form" class="php-email-form">
                 <div class="row">
                   <div class="form-group">
                     <input type="te/contactanos/mensajext" name="usuario" class="form-control" id="usuario" placeholder="Ingresa tu usuario" required>
@@ -33,9 +33,25 @@
                     <input type="password" class="form-control" name="password" id="password" placeholder="Ingrese su contraseña" required>
                   </div> 
                 </div>
+
+                <div class="my-3">
+                  <div class="loading ">Loading</div>
+                  <% errors.forEach(error => {%>
+
+                    <div class="error-message d-block"><%= error.msg %></div>
+
+                  <% }) %>
+                  <% success.forEach(msg => {%>
+
+                    <div class="sent-message d-block">msg.msg</div>
+
+                  <% }) %>
+                </div>
                 
                 <div class="text-center"><button type="submit">Iniciar sesion</button></div>
-                <a href="/registro" class="">Nuevo Usuario</a>
+
+                <div class="text-center my-3"><a href="/registro" class="">Registrar nuevo usuario</a></div>
+                
               </form>
             </div><!-- End Form -->
     

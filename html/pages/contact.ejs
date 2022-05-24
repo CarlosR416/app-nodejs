@@ -52,10 +52,10 @@
             </div>
             
             <div class="form mt-5">
-              <form action="/contactanos/mensaje" method="post" role="form" class="php-email-form">
+              <form action="/contactanos" method="post" role="form" class="php-email-form">
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <input type="te/contactanos/mensajext" name="name" class="form-control" id="name" placeholder="Indicanos tu nombre" required>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Indicanos tu nombre" required>
                   </div>
                   <div class="form-group col-md-6">
                     <input type="email" class="form-control" name="email" id="email" placeholder="El correo a donde te responderemos" required>
@@ -65,9 +65,19 @@
                   <textarea class="form-control" name="message" rows="5" placeholder="Dejanos tu mensaje" required></textarea>
                 </div>
                 <div class="my-3">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
+                  <div class="loading ">Loading</div>
+                  <% errors.forEach(error => {%>
+
+                    <div class="error-message d-block"><%= error.msg %></div>
+
+                  <% }) %>
+
+                  <% success.forEach(msg => { %>
+
+                    <div class="sent-message d-block"><%= msg.msg %></div>
+
+                  <% }) %>
+                  
                 </div>
                 <div class="text-center"><button type="submit">Enviar Mensaje</button></div>
               </form>

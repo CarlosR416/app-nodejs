@@ -24,7 +24,7 @@
                     <div class="swiper-slide">
                     <a href="single-post.html" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-1.jpg');">
                         <div class="img-bg-inner">
-                        <h2>The Best Homemade Masks for Face (keep the Pimples Away)</h2>
+                        <h2>The Best Homemade Masks for Face (keep the Pimples Away) </h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia! Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque maxime inventore repudiandae quidem necessitatibus rem atque.</p>
                         </div>
                     </a>
@@ -81,7 +81,7 @@
             <% productos.forEach(column => { %>
             <div class="col-lg-4 border-start custom-border">
                     <div class="post-entry-1">
-                        <a href="single-post.html"><img src="<%= column.imagen_src? column.imagen_src: '/productos/imagenes/sin_imagen.svg'; %>" alt="" class="img-fluid" ></a>
+                        <a href="single-post.html"><img src="/assets/img/<%= column.imagen_src? column.imagen_src: '/productos/imagenes/sin_imagen.svg'; %>" alt="" class="img-fluid" ></a>
                         <div class="post-meta"><span class="date">Ref: <%= column.precio %></span> </div>
                         <h2><a href="single-post.html"><%= column.descripcion %></a></h2>
                         <a href="#" class="btn btn-primary"> Mas Información</a>

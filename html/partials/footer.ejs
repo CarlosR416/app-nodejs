@@ -1,5 +1,21 @@
 <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-              
+<!-- Modal -->
+<div class="modal fade" id="confirm-delete" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Eliminar registro</h4>
+    </div>
+    <div class="modal-body">
+        <label>¿Estás seguro de eliminar el registro?</label>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="btn-delete-ok" data-dismiss="modal">Sí</button>
+        <button class="btn btn-danger" data-bs-dismiss="modal">No</button>
+    </div>
+    </div>
+  </div>
+</div>             
 <footer id="footer" class="footer">
     <div class="footer-legal">
       <div class="container">
@@ -38,8 +54,8 @@
 
   </footer>
 
-  <script src='/socket.io/socket.io.js'></script>
-  <script src='/index/main.js'></script>
+  
+
   <!-- Vendor JS Files -->
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
@@ -49,3 +65,9 @@
 
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>
+
+  <% if(typeof(js) != 'undefined'){ %>
+    <% js.forEach(src => {%>
+      <script src="<%= src %>"></script>
+    <%})%>
+  <% }%>

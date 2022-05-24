@@ -23,33 +23,50 @@
                 <div class="aside-block">
                   <h3 class="aside-title">Panel de control</h3>
                   <ul class="aside-links list-unstyled">
-                    <li><a href="#" id="productos-a"><i class="bi bi-chevron-right"></i> Productos</a></li>
-                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Culture</a></li>
-                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Sport</a></li>
-                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Food</a></li>
-                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Politics</a></li>
-                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Celebrity</a></li>
-                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Startups</a></li>
+                    <li><a href="#" id="productos-a"><i class="bi bi-chevron-right"></i>Agregar Productos</a></li>
+                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Productos</a></li>
+                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Productos de inicio</a></li>
+                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Categorias</a></li>
+                    <li><a href="category.html"><i class="bi bi-chevron-right"></i> Mensajes</a></li>
                     <li><a href="/logout"><i class="bi bi-chevron-right"></i> Cerrar Sesion</a></li>
                   </ul>
                 </div><!-- End Categories -->
     
                 
               </div>
-              <div class="col-md-9 post-content" data-aos="fade-up">
+              <div class="col-md-9 post-content" data-aos="fade-up" id="div-dashboard">
                 
-                <div class="form  mb-3">
-                    <form action="/contactanos/mensaje" method="post" role="form" class="php-email-form">
-                      <div class="row">
-                        <div class="form-group">
-                          <input type="te/contactanos/mensajext" name="name" class="form-control" id="name" placeholder="Buscador" required>
-                        </div>
-                      </div>
+                <table class="table">
+                  <thead>
+
+                    
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Descripcion</th>
+                      <th scope="col">Imagen</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                      <% productos.forEach(column => { %>
+
+                          <tr id="producto-<%= column.id %>">
+                            <th scope="row"><%= column.nun %></th>
+                            
+                            <td><%= column.descripcion %></td>
+                            <td><%= column.imagen_src %></td>
+                            <td>
+                              <a href="#" style="color: blue;">Editar </a>
+                              <a href="#" class="eliminar-registro" data-delete_id="<%= column.id %>"style="color: blue;">Eliminar</a>
+                            </td>
+                          </tr>
+                      <% }); %> 
                       
-                      <div class="text-center"><button type="submit">Buscar</button></div>
-                    </form>
-                </div><!-- End Form --> 
-                
+                    
+                  </tbody>
+                </table>
+              
               </div>
               
             </div>
@@ -57,8 +74,10 @@
         </section>
       </main><!-- End #main -->
 
-    <!-- footer partial-->
-    <%- include('../partials/footer.ejs') %>
+    <!-- footer partial -> Se le pasan las direciones de los archivos js necesarios para las plantilla 
+      (fomato array por orden de declaracion)-->
+    
+    <%- include('../partials/footer.ejs', {js: ['/socket.io/socket.io.js', '/index/main.js']}) %>
     <!-- //////////////////////// -->
 </body>
 </html>
