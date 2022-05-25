@@ -20,22 +20,22 @@
               <div class="col-md-9 post-content" data-aos="fade-up">
                 
                 <div class="form  mb-3">
-                    <form action="/productos" method="get" role="form" class="php-email-form">
+                    <form action="/productos" method="get" role="form" class="php-email-form" id="form-search">
                       <div class="row">
                         <div class="form-group">
                           <input type="text" name="s" class="form-control" id="s" placeholder="Buscador" required>
                         </div>
                       </div>
                       
-                      <div class="text-center"><button type="submit">Buscar</button></div>
+                      <div class="text-center"><button type="submit" >Buscar</button></div>
                       <div class="text-center my-3"><a href="/productos" class="">Limpiar Buscador</a></div>
                     </form>
                 </div><!-- End Form --> 
-                <div class="row g-5">
+                <div class="row g-5" id="div-content">
                     <% productos.forEach(column => { %>
                         <div class="col-lg-4 custom-border">
                                 <div class="post-entry-1">
-                                    <a href="single-post.html"><img src="<%= column.imagen_src? column.imagen_src: '/productos/imagenes/sin_imagen.svg'; %>" alt="" class="img-fluid" ></a>
+                                    <a href="single-post.html"><img src="/assets/img<%= column.imagen_src? column.imagen_src: '/assets/img/productos/sin_imagen.svg'; %>" alt="" class="img-fluid" ></a>
                                     <div class="post-meta"><span class="date">Ref: <%= column.precio %></span> </div>
                                     <h2><a href="single-post.html"><%= column.descripcion %></a></h2>
                                     <a href="#" class="btn btn-primary"> Mas Información</a>
@@ -69,7 +69,7 @@
       </main><!-- End #main -->
 
     <!-- footer partial-->
-    <%- include('../partials/footer.ejs') %>
+    <%- include('../partials/footer.ejs', {js: ['/socket.io/socket.io.js', '/assets/js/product.js']}) %>
     <!-- //////////////////////// -->
 </body>
 </html>

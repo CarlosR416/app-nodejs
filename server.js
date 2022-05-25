@@ -11,7 +11,9 @@ var data = require("./util/data")
 //servidor 
 const port = process.env.SERVER_PORT //puerto de escucha
 const express = require("express")
+const fileUpload = require('express-fileupload')
 const app = express()
+app.use(fileUpload())
 const parser = require("body-parser")
 app.use(parser.urlencoded({extended: true}))
 
@@ -49,69 +51,24 @@ const verifyToken = require('./routes/validate-token')
 
 io.on("connection", function (socket) {
 
-    console.log("usuario conectado");
-    //socket.emit("mensaje", {mensaje: "Hola"})
     
+    socket.on("buscar_producto", async function(param){
 
-    
-    socket.on("Eliminar", function(datos){
+        let sql = data.search_product(param)
 
-        console.log(datos)
-
-        let resp = `<table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Descripcion</th>
-                          <th scope="col">Imagen</th>
-                          <th scope="col"></th>
-                        </tr>
-                      </thead>
-                      <tbody>  
-                        <tr>
-                        <th scope="row">1</th>
-                        
-                        <td>arreglo grande con peluche</td>
-                        <td>/assets/img/post-landscape-8.jpg</td>
-                        <td>
-                            <a href="/admin/producto/editar?id=" style="color: blue;">Editar </a>
-                            <a href="/admin/producto/editar?id=" style="color: blue;">Eliminar</a>
-                        </td>
-                        </tr>
-                        <tr>
-                        <th scope="row">2</th>
-                        
-                        <td>arreglo pequeño sin peluche</td>
-                        <td>/assets/img/post-landscape-2.jpg</td>
-                        <td>
-                            <a href="/admin/producto/editar?id=" style="color: blue;">Editar </a>
-                            <a href="/admin/producto/editar?id=" style="color: blue;">Eliminar</a>
-                        </td>
-                        </tr>        
-                      </tbody>
-                    </table>`
-
-        socket.emit('carga-productos', resp)
-        
-    })
-    
-    async function getAllUsersfromDB(){
-        let sql = `SELECT * FROM usuario`
-    
         var datos = await new Promise ((resolve, reject) => {
             
             conexion_db.query(sql, function(err, data, fields){
                 if(err) return reject(err) 
-                console.log("consulta exitosa"); 
+                
                 return resolve(data); 
             })
 
         })
-        socket.emit("listar-usuarios", {datos})
-    }
-
-
-    //getAllUsersfromDB();
+        
+        socket.emit("listar_product", {datos})
+    })
+    
 })
 
 
@@ -364,68 +321,10 @@ app.post("/contactanos",[
 
 app.get("/productos", function(request, response){
 
-    const search = request.query.s
     const category = request.query.c
 
-    let sql = ''
-
-    if(category){
-        sql = `SELECT
-                    c.id,
-                    c.descripcion,
-                    c.precio,
-                    d.src AS imagen_src,
-                    d.descripcion AS imagen_descripcion,
-                    a.descripcion AS cate
-                FROM
-                    categorias a
-                JOIN categorias_productos b ON
-                    a.id = b.id_categoria
-                JOIN productos c ON
-                    b.id_producto = c.id
-                JOIN img_producto d ON
-                    c.id = d.id_producto
-                WHERE a.id = "${category}"
-                GROUP BY
-                    a.id`
-        
-    }else if(search){
-
-        sql = `SELECT
-                    a.id,
-                    a.descripcion,
-                    a.precio,
-                    b.src AS imagen_src,
-                    b.descripcion AS imagen_descripcion
-                FROM
-                    productos a
-                JOIN img_producto b ON
-                    a.id = b.id_producto
-                WHERE a.descripcion LIKE "%${search}%"
-                GROUP BY
-                    a.id` 
-                    
-    }else{
-
-        sql = `SELECT
-                    a.id,
-                    a.descripcion,
-                    a.precio,
-                    b.src AS imagen_src,
-                    b.descripcion AS imagen_descripcion
-                FROM
-                    productos a
-                JOIN img_producto b ON
-                    a.id = b.id_producto
-                GROUP BY
-                    a.id`
-
-    }
-    
-    
-
-    
-
+    let sql = data.get_product({c: category})
+    console.log(sql)
 
     conexion_db.query(sql, function(err, data, fields){
         if(err) throw err 

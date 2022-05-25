@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- head partial -->
+    <%- include('../partials/head.ejs') %>
+    <!-- //////////////////////// -->
+
+</head>
+<body>
+    
+    <!-- header partial-->
+    <%- include('../partials/header_admin.ejs') %>
+    <!-- //////////////////////// -->
+
+    <main id="main">
+
+        <section class="single-post-content contact">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3">
+                <!-- ======= Sidebar ======= -->
+                
+                <%- include('../partials/sidebar.ejs') %>
+    
+                
+              </div>
+              <div class="col-md-9 post-content" data-aos="fade-up" id="div-dashboard">
+                
+                <div class="form mt-5">
+                  <form action="/admin/agregar/producto" method="post" role="form" class="php-email-form" enctype="multipart/form-data">
+                    <div class="row">
+                      <div class="form-group">
+                        <input type="text" name="descripcion" class="form-control" id="descripcion" placeholder="Ingrese descripcion del producto" required>
+                      </div>
+                      <div class="mb-3">
+                        <label for="imagen" class="form-label">Imagen principal</label>
+                        <input class="form-control" type="file" id="imagen" name="imagen" onchange="//validarImagen(this);">
+                      </div>
+                      <script>
+                        function validarImagen(obj){
+                              var uploadFile = obj.files[0];
+
+                              if (!window.FileReader) {
+                                  alert('El navegador no soporta la lectura de archivos');
+                                  return;
+                              }
+
+                              if (!(/\.(jpg|png|gif)$/i).test(uploadFile.name)) {
+                                  alert('El archivo a adjuntar no es una imagen');
+                              }
+                              else {
+                                  var img = new Image();
+                                  img.onload = function () {
+                                      if (this.width.toFixed(0) != 200 && this.height.toFixed(0) != 400) {
+                                          alert('Las medidas deben ser: 200 * 200');
+                                      }
+                                      else if (uploadFile.size > 20000)
+                                      {
+                                          alert('El peso de la imagen no puede exceder los 200kb')
+                                      }
+                                      else {
+                                          alert('Imagen correcta :)')                
+                                      }
+                                  };
+                                  img.src = URL.createObjectURL(uploadFile);
+                              }                 
+                          }
+                      </script>
+                      
+                      <div class="form-group">
+                        <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio" required>
+                      </div>
+                     
+                    </div>
+                    <div class="my-3">
+                      <div class="loading ">Loading</div>
+                      <% errors.forEach(error => {%>
+    
+                        <div class="error-message d-block"><%= error.msg %></div>
+    
+                      <% }) %>
+    
+                      <% success.forEach(msg => {%>
+    
+                        <div class="sent-message d-block"><%= msg.msg %></div>
+    
+                      <% }) %>
+                      
+                    </div>
+                    <div class="text-center"><button type="submit">Guardar</button></div>
+    
+                    
+                  </form>
+                </div>
+              
+              </div>
+              
+            </div>
+          </div>
+        </section>
+      </main><!-- End #main -->
+
+    <!-- footer partial -> Se le pasan las direciones de los archivos js necesarios para las plantilla 
+      (fomato array por orden de declaracion)-->
+    
+    <%- include('../partials/footer.ejs', {js: ['/socket.io/socket.io.js', '/index/main.js']}) %>
+    <!-- //////////////////////// -->
+</body>
+</html>
