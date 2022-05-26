@@ -35,10 +35,10 @@
                     <% productos.forEach(column => { %>
                         <div class="col-lg-4 custom-border">
                                 <div class="post-entry-1">
-                                    <a href="single-post.html"><img src="/assets/img<%= column.imagen_src? column.imagen_src: '/assets/img/productos/sin_imagen.svg'; %>" alt="" class="img-fluid" ></a>
+                                    <a href="#"><img src="/assets/img<%= column.imagen_src? column.imagen_src: '/assets/img/productos/sin_imagen.svg'; %>" alt="" class="img-fluid" ></a>
                                     <div class="post-meta"><span class="date">Ref: <%= column.precio %></span> </div>
-                                    <h2><a href="single-post.html"><%= column.descripcion %></a></h2>
-                                    <a href="#" class="btn btn-primary"> Mas Información</a>
+                                    <h2><a href="#"><%= column.descripcion %></a></h2>
+                                    <a href="#" class="btn btn-primary" name="more-info" data-id="<%= column.id %>"> Mas Información</a>
                                 </div>
                         </div>
                     <% }); %> 
@@ -68,6 +68,21 @@
         </section>
       </main><!-- End #main -->
 
+      <div class="modal fade" id="view-product" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-title"></h4>
+          </div>
+          <div class="modal-body" id="modal-body-content">
+              <label>¿Estás seguro de eliminar el registro?</label>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+          </div>
+          </div>
+        </div>
+      </div>  
     <!-- footer partial-->
     <%- include('../partials/footer.ejs', {js: ['/socket.io/socket.io.js', '/assets/js/product.js']}) %>
     <!-- //////////////////////// -->

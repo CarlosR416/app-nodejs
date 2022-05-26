@@ -34,6 +34,7 @@
                       <th scope="col">#</th>
                       <th scope="col">Descripcion</th>
                       <th scope="col">Imagen</th>
+                      <th scope="col">Visible</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
@@ -46,8 +47,9 @@
                             
                             <td><%= column.descripcion %></td>
                             <td><%= column.imagen_src %></td>
+                            <td><%= column.visible %></td>
                             <td>
-                              <a href="#" style="color: blue;">Editar </a>
+                              <a href="#" style="color: blue;" class="editar-registro" data-id="<%= column.id %>">Editar </a>
                               <a href="#" class="eliminar-registro" data-delete_id="<%= column.id %>"style="color: blue;">Eliminar</a>
                             </td>
                           </tr>
@@ -66,8 +68,47 @@
 
     <!-- footer partial -> Se le pasan las direciones de los archivos js necesarios para las plantilla 
       (fomato array por orden de declaracion)-->
-    
-    <%- include('../partials/footer.ejs', {js: ['/assets/js/dashboard.js']}) %>s
+      <div class="modal fade" id="edit-product" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-title">Editar Producto</h4>
+          </div>
+          <div class="modal-body" id="ModalEdit-body-content">
+              <div class="form mt-1">
+                <form action="/admin/editar/producto" method="post" id="form_editar" role="form" class="php-email-form" enctype="multipart/form-data">
+                  <div class="row">
+                    <input type="hidden" id="id_producto" name="id_producto"/>
+                    <div class="form-group">
+                      <input type="text" name="descripcion" class="form-control" id="descripcion" placeholder="Ingrese descripcion del producto" required>
+                    </div>
+                    <div class="mb-3 mt-2 ">
+                      <label for="Precio" class="form-label">Precio</label>
+                      <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio" required>
+                    </div>
+                    <div class="mb-3 mt-2">
+                      <label for="visible" class="form-label">Visible</label>
+                
+                      <select  class="form-control" id="visible" name="visible">
+                          <option value="N">NO</option>
+                          <option value="S">SI</option>
+                      </select>
+                    </div>
+                    
+                  </div>
+  
+                  
+                </form>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" id="btn-update-ok" data-dismiss="modal">Actualizar</button>
+              <button class="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+          </div>
+        </div>
+      </div>  
+    <%- include('../partials/footer.ejs', {js: ['/assets/js/dashboard.js']}) %>
     <!-- //////////////////////// -->
 </body>
 </html>

@@ -70,7 +70,23 @@
                       <div class="form-group">
                         <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio" required>
                       </div>
-                     
+                      <div class="mb-3">
+                        <label for="visible" class="form-label">Visible</label>
+                  
+                        <select  class="form-control" id="visible" name="visible">
+                            <option value="N">NO</option>
+                            <option value="S">SI</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label for="visible" class="form-label">Categorias</label>
+                        
+                        <select  class="form-control" id="categoria" name="categoria">
+                          <% data.forEach(element => { %>
+                            <option value="<%= element.id %>"><%= element.descripcion %></option>
+                          <% }) %>
+                        </select>
+                      </div>
                     </div>
                     <div class="my-3">
                       <div class="loading ">Loading</div>

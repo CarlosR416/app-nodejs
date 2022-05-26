@@ -47,6 +47,8 @@ const  {check, validationResult}  = require('express-validator');
 //importando rutas
 const adminRoutes = require('./routes/admin')
 const verifyToken = require('./routes/validate-token')
+const { resolve } = require('path')
+const { rejects } = require('assert')
 
 
 io.on("connection", function (socket) {
@@ -55,7 +57,7 @@ io.on("connection", function (socket) {
     socket.on("buscar_producto", async function(param){
 
         let sql = data.search_product(param)
-
+        
         var datos = await new Promise ((resolve, reject) => {
             
             conexion_db.query(sql, function(err, data, fields){
@@ -67,6 +69,22 @@ io.on("connection", function (socket) {
         })
         
         socket.emit("listar_product", {datos})
+    })
+
+    socket.on("ver_producto", async function(param){
+
+        let sql = data.get_product(param)
+
+        var datos = await new Promise ((resolve, reject) => {
+            conexion_db.query(sql, function(err, data, fields){
+                if(err) return reject(err)
+
+                return resolve(data)
+            })
+        })
+
+        socket.emit("listar_producto", {datos})
+
     })
     
 })
@@ -324,7 +342,7 @@ app.get("/productos", function(request, response){
     const category = request.query.c
 
     let sql = data.get_product({c: category})
-    console.log(sql)
+    
 
     conexion_db.query(sql, function(err, data, fields){
         if(err) throw err 

@@ -3,6 +3,7 @@ const router = require('express').Router()
 require("../util/database")()
 var conexion_db = connection()
 
+const res = require('express/lib/response')
 var data = require("../util/data")
 //--------------------------------------//
 
@@ -12,37 +13,37 @@ router.get('/productos', (req, res) => {
 
 router.get('/dashboard', (req, res) => {
 
-    let sql = `SELECT
-                    a.id,
-                    ROW_NUMBER() OVER(ORDER BY  id ASC) as nun,
-                    a.descripcion,
-                    a.precio,
-                    b.src AS imagen_src,
-                    b.descripcion AS imagen_descripcion
-                FROM
-                    productos a
-                LEFT JOIN img_producto b ON
-                    a.id = b.id_producto
-                GROUP BY
-                    a.id`
+    let sql = data.get_dashboard()
 
-
-    conexion_db.query(sql, function(err, data, fields){
+    conexion_db.query(sql, function(err, data2, fields){
         if(err) throw err 
-        productos = data
-        res.render("pages/dashboard", {productos})
+
+        productos = data2
+        sql2 = data.get_categorys()
+
+        conexion_db.query(sql2, function(err, data, fields){
+            res.render("pages/dashboard", {productos, data})
+        })
     })
     
 })
 
 router.get("/agregar/producto", function(request, response){
     
-    response.render("pages/add_product")
+    let sql = data.get_categorys()
 
+    conexion_db.query(sql, function(err, data, fields){
+        if(err) throw err
+
+        response.render("pages/add_product", {data})
+
+    }) 
+
+    
 })
 
 router.post("/agregar/producto", function(request, response){
-    const {descripcion, precio} = request.body
+    const {descripcion, precio, visible, categoria} = request.body
     let imagen = request.files.imagen
     let img_name = "/productos/"+imagen.name
 
@@ -50,12 +51,29 @@ router.post("/agregar/producto", function(request, response){
         if(err) if(err) throw err
     })
 
-    let sql = data.add_product(descripcion, precio, img_name)
+    let sql = data.add_product(descripcion, precio, img_name, visible, categoria)
 
-    conexion_db.query(sql, function(err, data, fields){
+    conexion_db.query(sql, function(err, data3, fields){
         if(err) throw err
 
-        response.render("pages/add_product", {success: [{msg: "Producto agregado con exito"}]})
+        let sql2 = data.CreateRelationCategory(categoria)
+
+        conexion_db.query(sql2, function(err, data2, fields){
+            if(err) throw err
+            
+
+            let sql3 = data.get_categorys()
+
+            conexion_db.query(sql3, function(err, data, fields){
+                if(err) throw err
+
+                response.render("pages/add_product", {data ,success: [{msg: "Producto agregado con exito"}]})
+
+            }) 
+            
+
+        })
+        
     })
 })
 
@@ -69,6 +87,45 @@ router.post("/delete/producto/:id", function(req, res){
         res.json({delete: true})
     })
 
+})
+
+router.get("/editar/producto/:id", function(req, res){
+    let id = req.params.id
+
+    let sql = data.get_product({id: id})
+    
+    conexion_db.query(sql, function(err, data, fields){
+        if(err) throw err
+        
+        res.json(data)
+
+    })
+    
+})
+
+router.post("/editar/producto", function(req, res){
+
+    const {id_producto, descripcion, precio, visible} = req.body
+    
+    let sql = data.update_product(id_producto, descripcion, precio, visible)
+
+    conexion_db.query(sql, function(err, data, fields){
+        if(err) throw err
+
+        res.redirect("/admin/dashboard")
+    })
+
+    
+})
+
+router.get("/mensajes", function(req, res){
+    let sql = data.get_messages()
+
+    conexion_db.query(sql, function(err, data,  fields){
+        if(err) throw err
+
+        res.render("pages/messages", {data})
+    })
 })
 
 

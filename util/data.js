@@ -11,23 +11,43 @@ module.exports = {
                         productos_inicio a
                     JOIN productos b ON
                         a.id_producto = b.id
+                    WHERE b.visible = "S"
                     LIMIT 3`
         
         
     },
-    add_product: function(descripcion, precio, imagen){
+    add_product: function(descripcion, precio, imagen, visible, categoria){
 
-        return `INSERT INTO productos (
+        let sql = `INSERT INTO productos (
                             descripcion,
                             precio,
-                            imagen    
+                            imagen, 
+                            visible    
                         )
                         VALUES(
                             "${descripcion}",
                             "${precio}",
-                            "${imagen}"
-                        )`
+                            "${imagen}",
+                            "${visible}"
+                        );
+                    `
+                    
+        
+
+        return sql
                         
+    },
+    CreateRelationCategory: function(id_categoria){
+        // Se utiliza despues de insertar el producto
+        return `INSERT INTO categorias_productos (
+                        id_producto, 
+                        id_categoria
+                    ) 
+                    VALUES (
+                        LAST_INSERT_ID(),
+                        "${id_categoria}"
+                );`
+        
     },
     del_product: function(id){
 
@@ -38,7 +58,7 @@ module.exports = {
         sql = "WHERE a.visible = 'S'"
         
         if(param.c != undefined){
-            sql = `JOIN categorias_productos b 
+            sql = `LEFT JOIN categorias_productos b 
                         ON a.id = b.id_producto
                     WHERE b.id_categoria = "${param.c}" and a.visible = 'S'
                     `
@@ -46,11 +66,16 @@ module.exports = {
  
         (param.limit != undefined) ? sql = sql+" LIMIT "+limit : sql = sql
         
+        if(param.id != undefined){
+            sql = `WHERE a.id = ${param.id}`
+        }
+
         return `SELECT
                     a.id,
                     a.descripcion,
                     a.imagen as imagen_src,
-                    a.precio
+                    a.precio,
+                    a.visible
                 FROM
                     productos a
 
@@ -58,10 +83,7 @@ module.exports = {
     },
     search_product: function(param){
         
-        let sql = `JOIN categorias_productos b 
-                        ON a.id = b.id_producto
-                    WHERE a.visible = 'S' and a.descripcion LIKE "%${param.search}%"
-                    `
+        let sql = `WHERE a.visible = 'S' and a.descripcion LIKE "%${param.search}%"`
         
         if(param.c != undefined){
             sql = `JOIN categorias_productos b 
@@ -74,10 +96,33 @@ module.exports = {
                     a.id,
                     a.descripcion,
                     a.imagen as imagen_src,
-                    a.precio
+                    a.precio,
+                    a.visible
                 FROM
                     productos a
                 ${sql}`
+    },
+    get_dashboard: function(){
+        
+        return `SELECT
+                    a.id,
+                    ROW_NUMBER() OVER(ORDER BY  id ASC) as nun,
+                    a.descripcion,
+                    a.precio,
+                    a.visible,
+                    a.imagen as imagen_src
+                FROM
+                    productos a`
+                
+    },
+    get_categorys: function(){
+        return `SELECT * FROM categorias`
+    }, 
+    update_product: function(id_producto, descripcion, precio, visible){
+        return `UPDATE productos SET descripcion="${descripcion}", precio="${precio}", visible="${visible}" WHERE id="${id_producto}"`
+    },
+    get_messages: function(){
+        return `SELECT *, ROW_NUMBER() OVER(ORDER BY  id ASC) as nun FROM contacto`
     }
     
 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- head partial -->
+    <%- include('../partials/head.ejs') %>
+    <!-- //////////////////////// -->
+
+</head>
+<body>
+    
+    <!-- header partial-->
+    <%- include('../partials/header_admin.ejs') %>
+    <!-- //////////////////////// -->
+
+    <main id="main">
+
+        <section class="single-post-content contact">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3">
+                <!-- ======= Sidebar ======= -->
+                
+                <%- include('../partials/sidebar.ejs') %>
+    
+                
+              </div>
+              <div class="col-md-9 post-content" data-aos="fade-up" id="div-dashboard">
+                
+                <table class="table">
+                  <thead>
+
+                    
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Correo</th>
+                      <th scope="col">Mensaje</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                      <% data.forEach(column => { %>
+
+                          <tr id="producto-<%= column.id %>">
+                            <th scope="row"><%= column.nun %></th>
+                            
+                            <td><%= column.nombre %></td>
+                            <td><%= column.correo %></td>
+                            <td><%= column.mensaje %></td>
+                            
+                          </tr>
+                      <% }); %> 
+                      
+                    
+                  </tbody>
+                </table>
+              
+              </div>
+              
+            </div>
+          </div>
+        </section>
+      </main><!-- End #main -->
+
+    <!-- footer partial -> Se le pasan las direciones de los archivos js necesarios para las plantilla 
+      (fomato array por orden de declaracion)-->
+      
+    <%- include('../partials/footer.ejs', {js: ['/assets/js/dashboard.js']}) %>s
+    <!-- //////////////////////// -->
+</body>
+</html>

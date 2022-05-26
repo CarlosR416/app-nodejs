@@ -26,7 +26,7 @@ CREATE TABLE `categorias` (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,8 +50,12 @@ CREATE TABLE `categorias_productos` (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `id_producto` int(16) NOT NULL,
   `id_categoria` int(16) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`id`),
+  KEY `FK_categorias` (`id_categoria`) USING BTREE,
+  KEY `FK_productos` (`id_producto`),
+  CONSTRAINT `FK_categorias` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_productos` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,7 +64,7 @@ CREATE TABLE `categorias_productos` (
 
 LOCK TABLES `categorias_productos` WRITE;
 /*!40000 ALTER TABLE `categorias_productos` DISABLE KEYS */;
-INSERT INTO `categorias_productos` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5);
+INSERT INTO `categorias_productos` VALUES (23,46,1),(24,47,2),(26,49,2),(27,50,1);
 /*!40000 ALTER TABLE `categorias_productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,9 +80,10 @@ CREATE TABLE `contacto` (
   `nombre` varchar(64) NOT NULL,
   `correo` varchar(64) NOT NULL,
   `mensaje` text NOT NULL,
+  `visto` char(1) NOT NULL DEFAULT 'N',
   `fecha` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,7 +92,7 @@ CREATE TABLE `contacto` (
 
 LOCK TABLES `contacto` WRITE;
 /*!40000 ALTER TABLE `contacto` DISABLE KEYS */;
-INSERT INTO `contacto` VALUES (1,'HENRYFDF','<zx<zx','undefined','0000-00-00 00:00:00.000000'),(2,'HENRYFDF','<zx<zx','undefined','0000-00-00 00:00:00.000000'),(3,'sdfsd','<zx<zxsdfsdf','undefined','0000-00-00 00:00:00.000000'),(4,'carlosa','rodriguezq','asdsccsas','0000-00-00 00:00:00.000000'),(5,'carlos','8891957','undefined','0000-00-00 00:00:00.000000'),(6,'carlos','8891957','undefined','0000-00-00 00:00:00.000000'),(7,'Henry Rodriguez','rodriguezcarlos9716@gmail.com','mmm','0000-00-00 00:00:00.000000');
+INSERT INTO `contacto` VALUES (19,'Henry Rodriguez','rodriguezcarlos9716@gmail.com','Hola Estoy interesado en ver algunas cosas','N','0000-00-00 00:00:00.000000');
 /*!40000 ALTER TABLE `contacto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,7 +108,9 @@ CREATE TABLE `img_producto` (
   `descripcion` varchar(64) NOT NULL,
   `src` varchar(64) NOT NULL,
   `id_producto` int(16) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `FK_img_product` (`id_producto`),
+  CONSTRAINT `FK_img_product` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -113,7 +120,6 @@ CREATE TABLE `img_producto` (
 
 LOCK TABLES `img_producto` WRITE;
 /*!40000 ALTER TABLE `img_producto` DISABLE KEYS */;
-INSERT INTO `img_producto` VALUES (1,'Arreglo pequeño con peluche','/assets/img/post-landscape-2.jpg',1),(2,'arreglo grande con globos','/assets/img/post-landscape-2.jpg',2),(3,'arreglo para cada ocasion','/assets/img/post-landscape-2.jpg',3),(4,'arreglo para bebes','/assets/img/post-landscape-2.jpg',5),(5,'Un detalle que alegra','/assets/img/post-landscape-2.jpg',5);
 /*!40000 ALTER TABLE `img_producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,10 +134,11 @@ CREATE TABLE `productos` (
   `id` int(32) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(64) NOT NULL,
   `precio` decimal(64,0) NOT NULL,
-  `fecha` datetime(6) NOT NULL,
-  `imagen` varchar(32) NOT NULL,
+  `visible` char(1) NOT NULL DEFAULT 'N',
+  `fecha` datetime(6) NOT NULL DEFAULT current_timestamp(6),
+  `imagen` varchar(128) NOT NULL DEFAULT '/productos/default.jpg',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,8 +147,35 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,'arreglo grande con peluche',0,'0000-00-00 00:00:00.000000','asdasd'),(2,'arreglo pequeño sin peluche',0,'0000-00-00 00:00:00.000000','asdasd'),(3,'arreglo coon globos',0,'0000-00-00 00:00:00.000000','asdasdsadasd'),(4,'detalle que agrada',2,'0000-00-00 00:00:00.000000','asdasdsadasd'),(5,'alegria para todo el dia',3,'0000-00-00 00:00:00.000000','asdasdsadasd'),(6,'hacer feliz',2,'0000-00-00 00:00:00.000000','asdasdsadasd'),(7,'dia de las madres',3,'0000-00-00 00:00:00.000000','asdasdsadasd'),(8,'dia del padre',3,'0000-00-00 00:00:00.000000','asdasdsadasd'),(9,'3',3,'0000-00-00 00:00:00.000000','asdasdsadasd');
+INSERT INTO `productos` VALUES (46,'Arreglo de Globos ',5600,'S','2022-05-25 23:19:44.992388','/productos/post-landscape-3.jpg'),(47,'Arreglo de Flores',6800,'S','2022-05-25 23:20:10.999763','/productos/post-landscape-6.jpg'),(49,'Arreglo de Globos blacos',6900,'S','2022-05-25 23:22:19.788822','/productos/post-landscape-4.jpg'),(50,'Galletas Rosas',11000,'S','2022-05-25 23:22:40.696392','/productos/post-landscape-7.jpg');
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `productos_inicio`
+--
+
+DROP TABLE IF EXISTS `productos_inicio`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `productos_inicio` (
+  `id` int(16) NOT NULL AUTO_INCREMENT,
+  `id_producto` int(16) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_inicio_productos` (`id_producto`),
+  CONSTRAINT `fk_inicio_productos` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `productos_inicio`
+--
+
+LOCK TABLES `productos_inicio` WRITE;
+/*!40000 ALTER TABLE `productos_inicio` DISABLE KEYS */;
+INSERT INTO `productos_inicio` VALUES (5,47,'2022-05-26 03:23:39'),(6,49,'2022-05-26 03:23:45'),(7,50,'2022-05-26 03:24:11');
+/*!40000 ALTER TABLE `productos_inicio` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -160,7 +194,7 @@ CREATE TABLE `usuarios` (
   `fecha_registro` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
   PRIMARY KEY (`id`),
   UNIQUE KEY `usuario` (`usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +203,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (2,'carlos','User','$2b$10$JqXCvUyH/9kdPiDtxGfJ3uIrA3xHSWbBDxzy7vUt/HruGrN.GjFO.',1,'2022-05-14 04:01:19.420877'),(4,'carlos2','User','$2b$10$Lg40WMuWj5E62XeqaJp5M.ouy',0,'2022-05-14 04:25:36.330838'),(5,'caarlos','User','$2b$10$JqXCvUyH/9kdPiDtxGfJ3uIrA',0,'2022-05-14 04:39:38.212628');
+INSERT INTO `usuarios` VALUES (2,'carlos','User','$2b$10$JqXCvUyH/9kdPiDtxGfJ3uIrA3xHSWbBDxzy7vUt/HruGrN.GjFO.',1,'2022-05-14 04:01:19.420877'),(4,'carlos2','User','$2b$10$Lg40WMuWj5E62XeqaJp5M.ouy',0,'2022-05-14 04:25:36.330838'),(5,'caarlos','User','$2b$10$JqXCvUyH/9kdPiDtxGfJ3uIrA',0,'2022-05-14 04:39:38.212628'),(6,'carlos rodriguez','carlos9716','$2b$10$RQ9aOHBB7gG0d0ETceJEaec8fbjvWgK3KxOlJp887UildrkjI6B2q',0,'2022-05-18 18:28:23.204979'),(10,'carlos9716','carlos rodriguez','$2b$10$BJn3qkhT27.S8RI8lXVmVepw58OQeUAJ4UgFN1f9O1dTBMqszhbhe',0,'2022-05-18 18:34:59.998357'),(15,'robertocarlos','sonia','$2b$10$1tjP49/lmSw8dZtp2iGOiOSojAQMjX2GlTXPAo0.VuSA/9BHbs7ZS',0,'2022-05-18 18:43:12.222333'),(19,'carlos2415q','carlos','$2b$10$0bmPTYol.tciXpUUYIPdr.Xf94vfmqQHxj9C.3EWJd2.pil0taxYS',0,'2022-05-26 03:28:46.072609'),(20,'V26403295','asdasd','$2b$10$pkkjE0FtGfgmWObPwSEYSOyTFZbxYahgLEQqVHOFxPdEpph5tK9Ym',0,'2022-05-26 03:29:41.397604');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -182,4 +216,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-16 15:17:10
+-- Dump completed on 2022-05-25 23:32:39
